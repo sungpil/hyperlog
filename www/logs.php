@@ -22,5 +22,7 @@
         if(!@file_put_contents($logFile, join(PHP_EOL, $logs).PHP_EOL, FILE_APPEND | LOCK_EX)) {
             http_response_code(500);
         }
+    } else {
+        http_response_code(405);
     }
 ?>
