@@ -6,17 +6,17 @@ Hyper log
 ### Concept
 
 ```
-┌─────── EC2s ──────┐      ┌─────────┐                  ┌──────────┐   ┌─────┐   
-│     webserver     │──────│ Kinesis │─┐              ┌─│ Firehose │───│ S3  │
-│ aws-Kinesis-agent │      └─────────┘ │              │ └──────────┘   └─────┘
-└───────────────────┘   .              │              │      .            .
-                        .              │  ┌────────┐  │      .            .
-                        .              ├──│ Lambda │──┤      .            .
-                        .              │  └────────┘  │      .            .
-┌─────── EC2s───────┐   .              │              │      .            .
-│     webserver     │      ┌─────────┐ │              │ ┌──────────┐   ┌─────┐
-│ aws-Kinesis-agent │──────│ Kinesis │─┘              └─│ Firehose │───│ S3  │
-└───────────────────┘      └─────────┘                  └──────────┘   └─────┘     
+┌─EC2-AutoScalingGroup─┐    ┌─────────┐                ┌──────────┐  ┌────┐   
+│      webserver       ├────┤ Kinesis ├─┐            ┌─┤ Firehose ├──┤ S3 ├─┐
+│   aws-Kinesis-agent  │    └─────────┘ │            │ └──────────┘  └────┘ │
+└──────────────────────┘  .             │            │      .           .   │
+                          .             │ ┌────────┐ │      .           .   │  ┌────────┐
+                          .             ├─┤ Lambda ├─┤      .           .   ├──┤ Athena │
+                          .             │ └────────┘ │      .           .   │  └────────┘ 
+┌─EC2-AutoScalingGroup─┐  .             │            │      .           .   │
+│       webserver      │    ┌─────────┐ │            │ ┌──────────┐  ┌────┐ │
+│   aws-Kinesis-agent  ├────┤ Kinesis ├─┘            └─┤ Firehose ├──┤ S3 ├─┘
+└──────────────────────┘    └─────────┘                └──────────┘  └────┘     
 ```
 - EC2s - 확장 가능한 Ec2( 웹서버, aws-kiensis-agent ) 서버 그룹 - 서버 그룹은 특정 kinesis 와 연결
 - Kinesis - kinesis는 로그 스트림을 저장한다. 로드가 높아지면 [ EC2s - kiensis ] 를 추가한다.
@@ -24,8 +24,9 @@ Hyper log
 - Lambda 는 로그를 분석해서 게임별 Firehose 로 로그 전달
 - Firehose 는 정해진 시간/크기별로 로그를 나누어 S3 에 로그 적재
 
-### Structure
-### EC2 설정
-### Kiensis 설정
-### Lambda 설정
-### FireHose 설정
+### EC2 
+user-data 에 로그를 전송할 kinesis 
+### Kiensis 
+### Lambda 
+### FireHose 
+### Athena 
